@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DUX</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous">
+    <link rel="stylesheet" href="/indicecss">
+  </head>
+  <div class="cotainer" style="background-image: url(/tierra);">
+    <section class="titulo">
+      <div class="logo-container">
+        <h1 id="page-logo">DUX</h1>
+      </div>
+    </section>
+    <section class="titulo2">
+    <h5>"Una nueva manera de guiarse a través del mundo"</h5>
+    <p>Bienvenido 
+      <span id="user"></span></p>
+  </section>
+  </div>
+  <header id="menu" class="sticky-top">
+  </header>
+  <body>
+    <section class="blck">
+      <h1 class="tit">¿Que es DUX?</h1>
+      <p>DUX es una herramienta tecnologica la cual se basa en una necesidad que
+        obtienen algunos turistas a la hora de viajar
+        en la cual nuestros estos mismos puedan tener acceso a una vasta
+        cantidad
+        de guias, a lo cual tammbien los turistas tengan una opcion viable para
+        guiarse a la hora de estar en un lugar nuevo del mundo.
+      </p>
+    </section>
+    <section class="notblck">
+      <h1 class="tit">¿Por que?</h1>
+      <p>La razon es por que muchas veces a la hora de un turista llega a un
+        lugar
+        nuevo como un museo llega de una manera perdida ya que esta guía no
+        existe
+        o tiene muy poca información y en internet es muy difícil encontrar este
+        tipo de cosas y el propio museo no proporciona una clase de “guía” para
+        el
+        turista y este es un ejemplo de muchos, hay muchísimos más problemas
+        parecidos que se pueden resolver con una guia. </p>
+    </section>
+    <section class="blck">
+      <h1>¿Como funciona?</h1>
+      <p class="gami">Funciona con un sistema en el cual tu como usuario puedes comprar una
+        guia y tenerla en propiedad sin ningun tipo de problema, esto significa
+        que la puedes utilizar en cualquier lugar o momento.</p>
+        <h3>Ejemplo</h3>
+        <h5>Encuentra el boton dentro de la caja</h5>
+        <button id="ubi" onclick="apar()">Guiarse</button>
+      <div class="jogo">
+
+        <button id="encontrar" class="adios"></button>
+      </div>
+
+    </section>
+  </body>
+  <script src="/indicejs">
+</script>
+  <script>
+    ubi=document.querySelector("#ubi")  
+    enco=document.querySelector("#encontrar")
+    jogo=document.getElementsByClassName("jogo")
+    window.onload = function() {
+      enco.style.position = "relative"
+      enco.style.left = (Math.random() * (450 - 250) + 250) + "px"
+      enco.style.top = (Math.random() * (180 - 0) + 0) + "px"
+    }
+        function apar(params) {
+          if (enco.classList=="adios") {
+          enco.classList.add("hola")
+          enco.classList.remove("adios") 
+          }
+        }; 
+          
+  function Ingresar() {
+        var clienteinstanciada = new Cliente(
+          "",
+          "",
+          document.getElementById("email").value,
+          document.getElementById("clave").value,
+          ""   
+        );
+        clienteinstanciada.Login().then(
+          function (response) {
+
+            if (response.cedula != "-1") {
+              document.getElementById("user").innerHTML= localStorage
+            } else {
+              alert("no handez jakiando")
+            }
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+</script>
+</html>

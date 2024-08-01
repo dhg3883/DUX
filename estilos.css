@@ -1,0 +1,21 @@
+*{  
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.b{
+    background: #081f5c;
+}
+section{
+    margin: 10px;
+    background-color: #bad6eb;
+    padding: 10px;
+    border-radius: 10px;
+}
+#espacioparatabla{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    .card{
+        margin: 2%;
+    }
+}

@@ -1,0 +1,49 @@
+<html>
+<head>
+<script src="clientejs" ></script>
+</head>
+<body>
+<input id="cedula" placeholder="Cedula"/>
+<input id="nombre" placeholder="nombre"/>
+<input id="pa" placeholder="primer apellido"/>
+<input id="sa" placeholder="segundo apellido"/>
+<input id="direccion" placeholder="direccion"/>
+<input id="email" placeholder="email"/>
+<input id="tipo" placeholder="tipo"/>
+<input id="clave" placeholder="clave"/>
+
+<input type="button" value="Guardar" onclick="guardar()"/>
+
+<script>
+    
+    function guardar()
+            {
+                var clienteinstanciada = new Cliente(document.getElementById('cedula').value,
+                document.getElementById('nombre').value,
+                                                      document.getElementById('pa').value,
+                                                      document.getElementById('sa').value,
+                                                      document.getElementById('direccion').value,
+                                                      document.getElementById('email').value,
+                                                      document.getElementById('tipo').value,
+                                                      document.getElementById('clave').value
+                                                      );
+                                                      clienteinstanciada.Guardar().then(function(response)
+                                                  {
+                    console.log(response);
+                    alert('Guardado');
+                    
+                },
+                                                   function(err)
+                                                   {
+                    alert(err);
+                    
+                });
+                                                  
+                                                  
+                
+            }
+    
+    </script>
+
+</body>
+</html>

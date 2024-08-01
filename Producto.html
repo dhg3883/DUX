@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="/estilos" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+    <script src="productojs"></script>
+    <script src="clientejs"></script>
+    <script src="tiendajs"></script>
+  </head>
+  <body class="b">
+    <div class="container">
+      <section>
+        <div class="input-group mb-3">
+          <span class="input-group-text">Nombre del pollo</span>
+          <input
+            type="text"
+            id="nombre"
+            class="form-control"
+            placeholder="Pollo 2x1"
+          />
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text">Precio por unidad</span>
+          <input
+            type="number"
+            id="precioxunidad"
+            class="form-control"
+            placeholder="1500"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text">Descripcion</span>
+          <input
+            type="text"
+            id="descripcion"
+            class="form-control"
+            placeholder="1500"
+          />
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text">Fecha</span>
+          <input
+            type="date"
+            id="fecha"
+            class="form-control"
+            placeholder="9"
+          />
+        </div>
+        <select class="form-select" id="tiendas"></select>
+        <script
+          src="https://code.jquery.com/jquery-3.7.0.js"
+          integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+          crossorigin="anonymous"
+        ></script>
+        <link
+          rel="stylesheet"
+          href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+        />
+        <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+        <div class="d-grid gap-2 col-6 mx-auto">
+          <input
+            type="button"
+            value="Guardar"
+            onclick="guardar()"
+            id="botonaccion"
+            class="btn btn-dark"
+          />
+        </div>
+      </section>
+      <section>
+
+        <div id="espacioparatabla"></div>
+      </section>
+    </div>
+    <script>
+      var listadeclientesenmemoria = [];
+      var objetoclienteparamodificar = null;
+      const storedUserData = localStorage.getItem('clientelogueado')
+      const userData = JSON.parse(storedUserData)
+      var clienteinstanciada = new producto("", "", "", "", "", "");
+      clienteinstanciada.Seleccionartodos().then(
+        function (response) {
+          console.log(response)
+          cargartabla(response);
+         ;
+        },
+        function (err) {
+          alert(err);
+        }
+      );
+
+      var tiendainstanciada = new tienda("", "", "", "", "");
+      tiendainstanciada.Seleccionartodos().then(
+        function (response) {
+          for (var elemento in response) {
+            document.getElementById("tiendas").innerHTML +=
+              "<option id= '" +
+              response[elemento].id +
+              "' value = '" +
+              response[elemento].id +
+              "'>" +
+              response[elemento].nombre +
+              "</option>";
+          }
+        },
+        function (err) {
+          alert(err);
+        }
+      );
+
+      function cargartabla(dato) {
+        const storedUserData = localStorage.getItem('clientelogueado')
+    if (!storedUserData) {
+      alert("Tienes que logearte")  
+      location.href = "/";
+    } else {
+      for (var elemento in dato){
+        document.getElementById("espacioparatabla").innerHTML +=
+      '<div class="card" style="width: 18rem;">'+
+        '<div class="card-body">'+
+          '<h5 class="card-title">'+dato[elemento].nombre+'</h5>'+
+          '<h6 class="card-subtitle mb-2 text-body-secondary">'+dato[elemento].precioxunidad+'</h6>'+
+          '<a class="card-link"></a>'+
+          '<h6 class="card-subtitle mb-2 text-body-secondary">'+dato[elemento].autor+'</h6>'+
+          '<button onclick="modificaenarchivo('+dato[elemento].id+')">Comprar</button>'+
+          '</div>'+
+        '</div>'
+      }
+     
+    }
+       
+      }
+      function guardar() {
+      const storedUserData = localStorage.getItem('clientelogueado')
+      const userData = JSON.parse(storedUserData)
+      id= Math.floor(Math.random() * 10000000)
+        var clienteinstanciada = new producto(
+          JSON.stringify(id),
+          document.getElementById("nombre").value,
+          document.getElementById("precioxunidad").value,
+          document.getElementById("descripcion").value,
+          "hoy",
+          JSON.stringify(userData[0].NOMBRE)
+        );
+        clienteinstanciada.Guardar().then(
+          function (response) {
+            clienteinstanciada.Seleccionartodos().then(
+              function (response) {
+                cargartabla(response);
+                console.log(response);
+              },
+              function (err) {
+                alert(err);
+              }
+            );
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+      
+        function modificaenarchivo(id) {
+        var clienteinstanciada = new Cliente(
+          JSON.stringify(userData[0].ID),
+          "",
+          "",
+          "",
+          JSON.stringify(id)
+        );
+        clienteinstanciada.Modificar().then(
+          function (response) {
+            console.log(response);
+            alert("Modificado");
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+      function eliminacliente(id) {
+        var clienteinstanciada = new producto(id, "", "", "", "", "");
+        clienteinstanciada.Eliminar().then(
+          function (response) {
+            cargartabla(response);
+            console.log(response);
+            alert("Eliminado");
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+    </script>
+  </body>
+</html>

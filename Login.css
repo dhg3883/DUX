@@ -1,0 +1,55 @@
+* {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  transition: all 0.5s;
+}
+body{
+    background-color: #081f5c;
+    color: #081f5c;
+}
+.conta{
+    margin-top: 5%;
+    display: grid;
+    place-items: center;
+}
+.login {
+  background-color: #bad6eb;
+  padding: 5%;
+  border-radius: 10px ;
+  width: 35%;
+}
+.data {
+  border-radius: 5px;
+  width: 90%;
+
+  padding: 10px;
+  margin: 10px;
+}
+.title{
+    font-size: 70px;
+    text-align: center;
+    margin-top: 5%;
+    color: #bad6eb;
+}
+.but{
+    
+    align-self: center;
+    text-align: center;
+    margin-left: 2%;
+    width: 94%;
+    padding: 2%;
+    font-size: 25px;
+    border: none;
+    background-color: #7096D1;
+    border-radius: 5px;
+    border: #081f5c 1px solid;
+    cursor: pointer;
+}
+.but:hover{
+    background-color: #081f5c;
+    color: #bad6eb;    
+    box-shadow: 0px 0px 20px 1px #081f5c;
+    /* in order: x offset, y offset, blur size, spread size, color */
+    /* blur size and spread size are optional (they default to 0) */
+
+}

@@ -1,0 +1,154 @@
+<html>
+  <head>
+    <script src="clientejs"></script>
+    <script src="productojs"></script>
+    <script src="ventajs"></script>
+  </head>
+  <body>
+    <h2>Sistema de ventas</h2>
+    <input id="id" placeholder="Identificador unico" disabled />
+    <input id="fecha" placeholder="Fecha" type="date" />
+    <div id="Datosdelusuario"></div>
+
+    <h3>Productos para comprar</h3>
+    <div id="espacioparatabla"></div>
+
+    <h3>Productos seleccionados</h3>
+    <div id="espacioparatablaagregados"></div>
+
+    <input id="montototal" placeholder="Monto total" />
+    <input id="impuesto" placeholder="Impuesto" />
+    <input id="montototalconimpuesto" placeholder="Monto total con impuesto" />
+
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.js"
+      integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+    />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <input type="button" value="Comprar" onclick="guardar()" id="botonaccion" />
+
+    <script>
+      var usuario = JSON.parse(localStorage.getItem("clientelogueado"));
+      document.getElementById("Datosdelusuario").innerHTML =
+        "Datos del usuario: " + usuario.cedula + " " + usuario.nombre;
+      document.getElementById("id").value = new Date().valueOf();
+      var listadeclientesdeproductosenmemoria = [];
+      var listadeclientesdeproductosenmemoriaagregados = [];
+      var objetoclienteparamodificar = null;
+      var montototal = 0;
+      var montosinimpiestos = 0;
+      var clienteinstanciada = new producto("", "", "", "", "", "");
+      clienteinstanciada.Seleccionartodosparaventa().then(
+        function (response) {
+          cargartabla(response);
+          console.log(response);
+        },
+        function (err) {
+          alert(err);
+        }
+      );
+
+      function cargartabla(datos) {
+        document.getElementById("espacioparatabla").innerHTML =
+          '<table id="productostabla" class="display"><thead><th>id</th><th>nombre</th><th>descripcion</th><th>precioxunidad</th><th>unidademedida</th><th>tienda</th><th>Agregar</th></thead><tbody></tbody></table>';
+        listadeclientesdeproductosenmemoria = datos;
+        $("#productostabla").DataTable({
+          data: datos,
+          columns: [
+            { data: "id" },
+            { data: "nombre" },
+            { data: "descripcion" },
+            { data: "precioxunidad" },
+            { data: "unidaddemedida" },
+            { data: "tienda" },
+
+            { data: "agregar" },
+          ],
+        });
+      }
+      function Agrega(id) {
+        for (var elemento in listadeclientesdeproductosenmemoria) {
+          if (listadeclientesdeproductosenmemoria[elemento].id == id) {
+            var nuevoobjetoparamemoria =
+              listadeclientesdeproductosenmemoria[elemento];
+            nuevoobjetoparamemoria.quitar =
+              "<input type='button' value='Quitar' onclick='Quitar(\"" +
+              nuevoobjetoparamemoria.id +
+              "\")'></input>";
+            listadeclientesdeproductosenmemoriaagregados.push(
+              nuevoobjetoparamemoria
+            );
+            creatabladeagregados();
+            break;
+          }
+        }
+      }
+      function creatabladeagregados() {
+        document.getElementById("espacioparatablaagregados").innerHTML =
+          '<table id="productostablaagregados" class="display"><thead><th>id</th><th>nombre</th><th>descripcion</th><th>precioxunidad</th><th>unidademedida</th><th>tienda</th><th>Quitar</th></thead><tbody></tbody></table>';
+
+        $("#productostablaagregados").DataTable({
+          data: listadeclientesdeproductosenmemoriaagregados,
+          columns: [
+            { data: "id" },
+            { data: "nombre" },
+            { data: "descripcion" },
+            { data: "precioxunidad" },
+            { data: "unidaddemedida" },
+            { data: "tienda" },
+
+            { data: "quitar" },
+          ],
+        });
+        montototal = 0;
+        for (var elemento in listadeclientesdeproductosenmemoriaagregados) {
+          montototal =
+            montototal +
+            listadeclientesdeproductosenmemoriaagregados[elemento]
+              .precioxunidad;
+        }
+        document.getElementById("montototal").value = montototal;
+      }
+      function Quitar(id) {
+        for (var elemento in listadeclientesdeproductosenmemoriaagregados) {
+          if (listadeclientesdeproductosenmemoriaagregados[elemento].id == id) {
+            listadeclientesdeproductosenmemoriaagregados.splice(elemento, 1);
+            creatabladeagregados();
+            break;
+          }
+        }
+      }
+      function guardar() {
+        var productosidseparadosporcoma = "";
+        for (var elemento in listadeclientesdeproductosenmemoriaagregados) {
+          productosidseparadosporcoma =
+            productosidseparadosporcoma +
+            listadeclientesdeproductosenmemoriaagregados[elemento].id +
+            ",";
+        }
+        var clienteinstanciada = new venta(
+          document.getElementById("id").value,
+          document.getElementById("fecha").value,
+          usuario.cedula,
+          productosidseparadosporcoma,
+          document.getElementById("montototal").value,
+          document.getElementById("impuesto").value,
+          document.getElementById("montototalconimpuesto").value
+        );
+        clienteinstanciada.Guardar().then(
+          function (response) {
+            alert(response);
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="logincss" />
+    <script src="clientejs"></script>
+  </head>
+  <body>
+    <h1 class="title">DUX</h1>
+    <div class="conta">
+      <span class="login">
+        <h1 style="text-align: center">Login</h1>
+        <div>
+          <h3>Email</h3>
+          <input id="email" class="data" placeholder="example@gmail.com" />
+        </div>
+        <div>
+          <h3>Contraseña</h3>
+          <input id="clave" class="data" type="password" />
+        </span>
+      </div>
+        <button class="but" onclick="Ingresar()"id="botonaccion">Ingresar</button>
+    </div>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.js"
+      integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+      crossorigin="anonymous"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+
+    <script
+      src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script>
+      function Ingresar() {
+        var clienteinstanciada = new Cliente(
+          "",
+          "",
+          document.getElementById("email").value,
+          document.getElementById("clave").value,
+          ""   
+        );
+        clienteinstanciada.Login().then(
+          function (response) {
+            console.log(response)
+            if (response[0] != undefined )   {
+              alert("Acceso otorgado");
+              localStorage.setItem("clientelogueado", JSON.stringify(response));
+              location.href = "/";
+            } else {
+              alert("no handez jakiando");
+            }
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+    </script>
+  </body>
+</html>

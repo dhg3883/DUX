@@ -1,0 +1,150 @@
+<html>
+  <head>
+    <script src="clientejs"></script>
+  </head>
+  <body>
+    <input id="ID" placeholder="ID" />
+    <input id="NOMBRE" placeholder="Nombre" />
+    <input id="EMAIL" placeholder="example@gmail.com" />
+    <input id="CLAVE" placeholder=":)" type="password" />
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.js"
+      integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+    />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <input type="button" value="Guardar" onclick="guardar()" id="botonaccion" />
+    <div id="espacioparatabla"></div>
+
+    <script>
+      var listadeclientesenmemoria = [];
+      var objetoclienteparamodificar = null;
+
+      var clienteinstanciada = new Cliente("", "", "", "", "");
+      clienteinstanciada.Seleccionartodos().then(
+        function (response) {
+          cargartabla(response);
+          console.log(response);
+        },
+        function (err) {
+          alert(err);
+        }
+      );
+      function cargartabla(datos) {
+        document.getElementById("espacioparatabla").innerHTML =
+          '<table id="clientestabla" class="display"><thead><th>ID</th><th>Nombre</th><th>Email</th><th>Guias</th><th>Modificar</th><th>Eliminar</th></thead><tbody></tbody></table>';
+        listadeclientesenmemoria = datos;
+        $("#clientestabla").DataTable({
+          data: datos,
+          columns: [
+            { data: "ID" },
+            { data: "NOMBRE" },
+            { data: "EMAIL" },
+            { data: "GUIAID" },
+            { data: "modificar" },
+            { data: "eliminar" },
+          ],
+        });
+      }
+      function guardar() {
+        
+        var clienteinstanciada = new Cliente(
+          document.getElementById("ID").value,
+          document.getElementById("NOMBRE").value,
+          document.getElementById("EMAIL").value,
+          document.getElementById("CLAVE").value,
+          ""
+        );
+        clienteinstanciada.Guardar().then(
+          function (response) {
+            cargartabla(response);
+            console.log(response);
+            alert("Guardado");
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+      function modificaclienteprimerpaso(cedula) {
+        for (var ele in listadeclientesenmemoria) {
+          if (listadeclientesenmemoria[ele].cedula == cedula) {
+            objetoclienteparamodificar = listadeclientesenmemoria[ele];
+            break;
+          }
+        }
+        document.getElementById("cedula").value =
+          objetoclienteparamodificar.cedula;
+        document.getElementById("nombre").value =
+          objetoclienteparamodificar.nombre;
+        document.getElementById("pa").value =
+          objetoclienteparamodificar.primerapellido;
+        document.getElementById("sa").value =
+          objetoclienteparamodificar.segundoapellido;
+        document.getElementById("direccion").value =
+          objetoclienteparamodificar.direccion;
+        document.getElementById("email").value =
+          objetoclienteparamodificar.correolectronico;
+        document.getElementById("tipo").value = objetoclienteparamodificar.tipo;
+        document.getElementById("clave").value =
+          objetoclienteparamodificar.clave;
+        document.getElementById("botonaccion").value = "Modificar";
+        document
+          .getElementById("botonaccion")
+          .setAttribute("onClick", "modificaenarchivo()");
+      }
+      function modificaenarchivo() {
+        var clienteinstanciada = new Cliente(
+          document.getElementById("cedula").value,
+          document.getElementById("nombre").value,
+          document.getElementById("pa").value,
+          document.getElementById("sa").value,
+          document.getElementById("direccion").value,
+          document.getElementById("email").value,
+          document.getElementById("tipo").value,
+          document.getElementById("clave").value
+        );
+        clienteinstanciada.Modificar().then(
+          function (response) {
+            cargartabla(response);
+            console.log(response);
+            alert("Modificado");
+            document.getElementById("botonaccion").value = "Guardar";
+            document
+              .getElementById("botonaccion")
+              .setAttribute("onClick", "guardar()");
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+      function eliminacliente(cedula) {
+        var clienteinstanciada = new Cliente(
+          cedula,
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        );
+        clienteinstanciada.Eliminar().then(
+          function (response) {
+            cargartabla(response);
+            console.log(response);
+            alert("Eliminado");
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,129 @@
+<html>
+  <head>
+
+  </head>
+  <header id="menu" class="sticky-top">
+  </header>
+  <body>
+    <input id="ID" placeholder="ID" />
+    <input id="NOMBRE" placeholder="Nombre" />
+    <input id="EMAIL" placeholder="example@gmail.com" />
+    <input id="CLAVE" placeholder=":)" type="password" />
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.js"
+      integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css"
+    />
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <input type="button" value="Guardar" onclick="guardar()" id="botonaccion" />
+    <div id="espacioparatabla"></div>
+    <script src="productojs"></script>
+    <script src="clientejs"></script>
+    <script src="/indicejs"></script>
+    <script>
+      var listadeclientesenmemoria = [];
+      var objetoclienteparamodificar = null;
+      const storedUserData = localStorage.getItem('clientelogueado')
+      const userData = JSON.parse(storedUserData)
+      var clienteinstanciada = new producto("", "", "", "", "", JSON.stringify(userData[0].NOMBRE));
+      clienteinstanciada.Seleccionartodaslasguias().then(
+        function (response) {
+          cargartabla(response);
+          console.log(response);
+        },
+        function (err) {
+          alert(err);
+        }
+      );
+      function cargartabla(datos) {
+    if (!storedUserData) {
+      alert("Tienes que logearte")
+      location.href = "/";
+    } else {
+      document.getElementById("espacioparatabla").innerHTML =
+          '<table id="productostabla" class="display"><thead><th>id</th><th>nombre</th><th>descripcion</th><th>precio</th><th>fecha</th><th>autor</th></th><th>Modificar</th><th>Eliminar</th></thead><tbody></tbody></table>';
+        listadeclientesenmemoria = datos;
+        $("#productostabla").DataTable({
+          data: datos,
+          columns: [
+            { data: "id" },
+            { data: "nombre" },
+            { data: "descripcion" },
+            { data: "precioxunidad" },
+            { data: "fecha" },
+            { data: "autor" },
+            { data: "modificar" },
+            { data: "eliminar" },
+          ],
+        });
+    }
+       
+      }
+      function guardar() {
+        
+        var clienteinstanciada = new Cliente(
+          document.getElementById("ID").value,
+          document.getElementById("NOMBRE").value,
+          document.getElementById("EMAIL").value,
+          document.getElementById("CLAVE").value,
+          ""
+        );
+        clienteinstanciada.Guardar().then(
+          function (response) {
+            cargartabla(response);
+            console.log(response);
+            alert("Guardado");
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+      function modificaenarchivo(id) {
+        var clienteinstanciada = new Cliente(
+          userData[0].ID,
+          "",
+          "",
+          "",
+          id
+        );
+        clienteinstanciada.Modificar().then(
+          function (response) {
+            cargartabla(response);
+            console.log(response);
+            alert("Modificado");
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+      function eliminacliente(cedula) {
+        var clienteinstanciada = new Cliente(
+          cedula,
+          "",
+          "",
+          "",
+          "",
+          "",
+          "",
+          ""
+        );
+        clienteinstanciada.Eliminar().then(
+          function (response) {
+            cargartabla(response);
+            console.log(response);
+            alert("Eliminado");
+          },
+          function (err) {
+            alert(err);
+          }
+        );
+      }
+    </script>
+  </body>
+</html>
