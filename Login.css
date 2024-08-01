@@ -1,54 +1,90 @@
+:root{
+  --bg-negro: #000000;
+  --bg-azul1: #011f4b;
+  --bg-azul2: #03396c;
+  --bg-azul3: #005b96;
+  --bg-azul4: #6497b1;
+  --bg-azul5: #b3cde0;
+  --bg-blanco: #ffffff;
+}
 * {
   margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
   transition: all 0.5s;
+  color: var(--bg-blanco);
 }
 body{
-    background-color: #081f5c;
-    color: #081f5c;
+  background: linear-gradient(132deg, rgba(0,0,0,1) 0%, rgba(8,31,92,1) 75%);
 }
 .conta{
-    margin-top: 5%;
-    display: grid;
-    place-items: center;
+    width: 25%;
+    padding: 5%;
+    background-color: var(--bg-negro);
+    height: 80vh;
 }
+
 .login {
-  background-color: #bad6eb;
-  padding: 5%;
-  border-radius: 10px ;
   width: 35%;
+  margin-top: 5%;
+  h3{
+    margin-bottom: 10px;
+    opacity: 0.5;
+  }
 }
 .data {
   border-radius: 5px;
   width: 90%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: none;
+  padding: 20px;
+  margin-bottom: 10%;
+  caret-color: var(--bg-azul3);
+  text-align: center;
 
-  padding: 10px;
-  margin: 10px;
+}
+.data:focus-within{
+  border: 1px solid var(--bg-blanco);
+}
+
+
+.icon{
+  position: absolute;
+  padding: 18px;
+  min-width: 40px;
+  opacity: 0.5;
+}
+img{
+  height: 70%;
+  position: absolute;
+  top: 30%;
+  left: 60%;
 }
 .title{
     font-size: 70px;
-    text-align: center;
-    margin-top: 5%;
-    color: #bad6eb;
+    margin-top: 25%;
+    color: var(--bg-azul5);
+    margin-bottom: 10%;
 }
-.but{
-    
+.selected{
+  color: var(--bg-azul3);
+  opacity: 1;
+}
+.but{  
     align-self: center;
     text-align: center;
-    margin-left: 2%;
-    width: 94%;
-    padding: 2%;
+    width: 100%;
+    padding: 20px;
     font-size: 25px;
+    margin-top: 10%;
     border: none;
-    background-color: #7096D1;
+    background-color: var(--bg-azul1);
     border-radius: 5px;
-    border: #081f5c 1px solid;
+    border: none;
     cursor: pointer;
 }
 .but:hover{
-    background-color: #081f5c;
-    color: #bad6eb;    
-    box-shadow: 0px 0px 20px 1px #081f5c;
+    background-color: var(--bg-azul3);
+    color: var(--bg-azul5);    
+    box-shadow: 0px 0px 20px 1px var(--bg-azul5);
     /* in order: x offset, y offset, blur size, spread size, color */
     /* blur size and spread size are optional (they default to 0) */
 

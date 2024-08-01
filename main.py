@@ -53,20 +53,26 @@ def root():
 @app.get("/tierra")
 def root():
     return FileResponse('./IMG/tierra.png')
+@app.get("/turismo")
+def root():
+    return FileResponse('./IMG/turismo.png')
 @app.get("/ventas")
 async def root():
     return FileResponse('venta.html')
 @app.get("/estilos")
 async def root():
     return FileResponse('estilos.css')
+@app.get("/font")
+async def root():
+    return FileResponse('font.css')
 @app.get("/logincss")
 async def root():
     return FileResponse('Login.css')
 
-@app.get("/archivopaginaweb")
+@app.get("/clientes")
 async def root():
     return FileResponse('Cliente.html')
-@app.get("/archivopaginawebproducto")
+@app.get("/guias")
 async def root():
     return FileResponse('Producto.html')
 
@@ -87,13 +93,19 @@ async def root():
     return FileResponse('fastapi-env/ventafrontend.js') 
 @app.get("/")
 async def root():
-    return FileResponse('Indice.html') 
-@app.get("/Guias")
+    return FileResponse('Inicio.html') 
+@app.get("/indice")
+async def root():
+    return FileResponse('indice.html') 
+@app.get("/Gui")
 async def root():
     return FileResponse('Guias.html') 
 @app.get("/indicecss")
 async def root():
     return FileResponse('indice.css') 
+@app.get("/menucss")
+async def root():
+    return FileResponse('menu.css') 
 @app.get("/clientes")
 async def root():
     clientecito = Cliente()
